@@ -8,12 +8,14 @@ import { FaPlus } from "react-icons/fa";
 // Importing components
 import EachTodo from "./EachTodo";
 import AddTodo from "./modals/AddTodo";
+import DeleteTodo from "./modals/DeleteTodo.jsx";
 
 const Todo = ({status, data}) => {
 
     const [ todo, setTodo ] = useState({});
 
     const [addTodoModal, setAddTodoModal] = useState(false);
+    const [deleteTodoModal, setDeleteTodoModal] = useState(false);
 
     const date = new Date(data.date);
 
@@ -32,14 +34,6 @@ const Todo = ({status, data}) => {
         }
     }, [])
 
-    const deleteTodo = () => {
-        deleteDoc(docRef)
-        .then(() => {
-            console.log("Deleted");
-        })
-        .catch(err => console.log(err))
-    }
-
   return (
     <div className="flex justify-center">
 
@@ -50,16 +44,17 @@ const Todo = ({status, data}) => {
         </div>
         <ul>
             {
-                todo.todos && todo?.todos.length !== 0 ? todo?.todos.map(eachTodo => <EachTodo key={eachTodo.id} todo={eachTodo.task} priority={eachTodo.priority} status={status} />) : <h3 className="text-xl font-semibold text-gray-500 mt-3">No todo found</h3>
+                todo.todos && todo?.todos.length !== 0 ? todo?.todos.map(eachTodo => <EachTodo key={eachTodo.id} todo={eachTodo} status={status} todos={todo.todos} docRef={docRef} />) : <h3 className="text-xl font-semibold text-gray-500 mt-3">No todo found</h3>
             }
         </ul>
         <div className="flex gap-5 items-center justify-between mt-6">
             <p className={`${status === "inProcess" && "text-gray-500"}`}>Your day was productive. Well done &#x1F44D;</p>
-            <button className="py-2 pl-3 bg-red-500 hover:bg-red-600 transitionItem rounded text-white"><span onClick={() => deleteTodo()}><ImBin className="icon" /></span></button>
+            <button className="py-2 pl-3 bg-red-500 hover:bg-red-600 transitionItem rounded text-white"><span onClick={() => setDeleteTodoModal(true)}><ImBin className="icon" /></span></button>
         </div>
     </div>
     {/* Adding Modal */}
     <AddTodo addTodoModal={addTodoModal} setAddTodoModal={() => setAddTodoModal()} docRef={docRef} todos={todo.todos} />
+    <DeleteTodo deleteTodoModal={deleteTodoModal} setDeleteTodoModal={() => setDeleteTodoModal()} docRef={docRef} />
     </div>
   )
 }

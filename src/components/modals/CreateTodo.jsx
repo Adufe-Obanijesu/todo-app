@@ -27,19 +27,24 @@ const CreateTodo = ({ date, createTodoModal, setCreateTodoModal }) => {
       date,
       userId: user.uid,
       todos: [],
+      done: false
     })
       .then(() => {
         console.log("created successfully");
         setLoading(false);
+        setCreateTodoModal(false);
       })
       .catch((err) => {
         console.log(err);
         setLoading(false);
+        setCreateTodoModal(false);
       });
   };
 
   const override = {
     borderColor: "white",
+    margin: "0",
+    padding: "0"
   };
 
   return (
@@ -73,7 +78,6 @@ const CreateTodo = ({ date, createTodoModal, setCreateTodoModal }) => {
                 <ClipLoader
                   size={20}
                   loading={loading}
-                  className="mt-1 ml-2"
                   cssOverride={override}
                 />
               )}

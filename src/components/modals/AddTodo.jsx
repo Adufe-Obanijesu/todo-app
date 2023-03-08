@@ -44,6 +44,8 @@ const AddTodo = ({addTodoModal, setAddTodoModal, docRef, todos}) => {
 
   const override = {
     borderColor: "white",
+    margin: "0",
+    padding: "0"
   };
 
   return (
@@ -77,7 +79,6 @@ const AddTodo = ({addTodoModal, setAddTodoModal, docRef, todos}) => {
                 <ClipLoader
                   size={20}
                   loading={loading}
-                  className="mt-1 mr-2"
                   cssOverride={override}
                 />
               )}
