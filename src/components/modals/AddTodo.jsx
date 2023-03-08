@@ -26,7 +26,8 @@ const AddTodo = ({addTodoModal, setAddTodoModal, docRef, todos}) => {
       todos: [...todos, {
         id: nanoid(),
         priority,
-        task
+        task,
+        done: false
       }]
     })
     .then(() => {

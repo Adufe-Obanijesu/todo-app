@@ -1,32 +1,72 @@
 import { useState } from "react";
+import moment from "moment";
 import { ClipLoader } from "react-spinners";
 import { updateDoc } from "../firebase/index";
 
 // Importing icons
-import { ImBin } from "react-icons/im";
+import { ImBin, ImCheckmark } from "react-icons/im";
+import { FaTimes } from "react-icons/fa";
 
-const EachTodo = ({todo, todos, status, docRef}) => {
+const EachTodo = ({todo, todos, status, docRef, date}) => {
 
-    const [ loading, setLoading ] = useState(false);
+    const [ loadingForDelete, setLoadingForDelete ] = useState(false);
+    const [ loadingForMarkAsDone, setLoadingForMarkAsDone ] = useState(false);
 
     const deleteTask = () => {
-        setLoading(true);
+        setLoadingForDelete(true);
         const newTodos = todos.filter(eachTodo => todo.id !== eachTodo.id);
         updateDoc(docRef, {
             todos: newTodos
         })
         .then(() => {
-            setLoading(false);
+            setLoadingForDelete(false);
             console.log("Task deleted");
         })
         .catch(err => {
-            setLoading(false);
+            setLoadingForDelete(false);
+            console.log(err);
+        })
+    }
+
+    const markAsDoneOrUndone = (status = true) => {
+        const tomorrowDate = Date.parse(moment().startOf("day").add(1, "days")._d);
+        const tomorrowDateString = new Date(tomorrowDate);
+        
+        if (date === tomorrowDate) {
+            console.log(`Chill, its not yet ${tomorrowDateString.toDateString()}`);
+            return;
+        }
+
+        if (status === false) setLoadingForMarkAsDone(true);
+
+        const newTodos = todos.map(eachTodo => {
+            if(todo.id === eachTodo.id) {
+                eachTodo.done = !eachTodo.done
+            }
+
+            return eachTodo
+        });
+        updateDoc(docRef, {
+            todos: newTodos
+        })
+        .then(() => {
+            setLoadingForMarkAsDone(false);
+            console.log("Task updated");
+        })
+        .catch(err => {
+            setLoadingForMarkAsDone(false);
             console.log(err);
         })
     }
 
     const override = {
         borderColor: "white",
+        margin: "0",
+        padding: "0"
+      };
+
+      const overrideUndo = {
+        borderColor: "red",
         margin: "0",
         padding: "0"
       };
@@ -46,19 +86,40 @@ const EachTodo = ({todo, todos, status, docRef}) => {
     }
         <p className={`col-span-8 ${status === "inProcess" && "text-gray-500"}`}>{todo.task}</p> 
         <p className="col-span-3 flex justify-center gap-2">
-            <button className="py-1 w-16 px-2 bg-orange-500 hover:bg-orange-600 transitionItem rounded text-sm">Done</button>
-            <button className="py-1 pl-2 w-8 bg-red-500 hover:bg-red-600 transitionItem rounded text-white">
-            {!loading ? (
-                <span><ImBin className="icon" onClick={() => deleteTask()} /></span>
-            ) : (
-                <ClipLoader
-                size={20}
-                loading={loading}
-                cssOverride={override}
-                />
-            )}
-            
-            </button>
+            {
+                !todo.done ? (
+                    <>
+                        <button className="py-1 w-16 px-2 bg-orange-500 hover:bg-orange-600 transitionItem rounded text-sm" onClick={() => markAsDoneOrUndone()}>Done</button>
+                        <button className="py-1 pl-2 w-8 bg-red-500 hover:bg-red-600 transitionItem rounded text-white">
+                        {!loadingForDelete ? (
+                            <span><ImBin className="icon" onClick={() => deleteTask()} /></span>
+                        ) : (
+                            <ClipLoader
+                            size={20}
+                            loading={loadingForDelete}
+                            cssOverride={override}
+                            />
+                        )}
+                        
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        <span><ImCheckmark className="icon text-green-500 text-lg"/>
+                        </span>
+                        {!loadingForMarkAsDone ? (
+                            <span><FaTimes className="icon text-red-400 hover:text-red-500 cursor-pointer text-lg" onClick={() => markAsDoneOrUndone(false)} /></span>
+                        ) : (
+                            <ClipLoader
+                            size={20}
+                            loading={loadingForMarkAsDone}
+                            cssOverride={overrideUndo}
+                            />
+                        )}
+                        
+                    </>
+                )
+            }
         </p>
     </li>
   )

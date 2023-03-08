@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { doc, db, onSnapshot, deleteDoc } from "../firebase/index";
+import { doc, db, onSnapshot } from "../firebase/index";
 
 // Importing icons
 import { ImBin } from "react-icons/im";
@@ -44,7 +44,7 @@ const Todo = ({status, data}) => {
         </div>
         <ul>
             {
-                todo.todos && todo?.todos.length !== 0 ? todo?.todos.map(eachTodo => <EachTodo key={eachTodo.id} todo={eachTodo} status={status} todos={todo.todos} docRef={docRef} />) : <h3 className="text-xl font-semibold text-gray-500 mt-3">No todo found</h3>
+                todo.todos && todo?.todos.length !== 0 ? todo?.todos.map(eachTodo => <EachTodo key={eachTodo.id} todo={eachTodo} status={status} todos={todo.todos} docRef={docRef} date={todo.date} />) : <h3 className="text-xl font-semibold text-gray-500 mt-3">No todo found</h3>
             }
         </ul>
         <div className="flex gap-5 items-center justify-between mt-6">

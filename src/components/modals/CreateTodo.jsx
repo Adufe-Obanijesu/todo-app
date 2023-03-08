@@ -26,8 +26,7 @@ const CreateTodo = ({ date, createTodoModal, setCreateTodoModal }) => {
     addDoc(colRef, {
       date,
       userId: user.uid,
-      todos: [],
-      done: false
+      todos: []
     })
       .then(() => {
         console.log("created successfully");
