@@ -1,3 +1,5 @@
+import React from "react";
+
 const SelectInput = ({input, setInput, name}) => {
   return (
     <div className="shadow rounded bg-white py-1 mt-2">
@@ -11,7 +13,7 @@ const SelectInput = ({input, setInput, name}) => {
             name="accessType"
             id="accessType"
             className="px-3 text-gray-500 w-full focus:outline-none"
-            onChange={() => setInput(e.target.value)}>
+            onChange={e => setInput(e.target.value)} value={input}>
             <option value="">Select Priority</option>
             <option value="A">A - Must do</option>
             <option value="B">B - Quite Important</option>
@@ -21,4 +23,4 @@ const SelectInput = ({input, setInput, name}) => {
   )
 }
 
-export default SelectInput
+export default React.memo(SelectInput);

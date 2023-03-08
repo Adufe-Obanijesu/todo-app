@@ -1,16 +1,50 @@
 import { useState } from "react";
-import SelectInput from "../inputs/SelectInput";
+import { updateDoc } from "../../firebase/index";
+import { nanoid } from "nanoid";
+import { ClipLoader } from "react-spinners";
 
 // Importing components
 import TextInput from "../inputs/TextInput";
+import SelectInput from "../inputs/SelectInput";
 
 // Importing icons
 import { FaPlus } from "react-icons/fa";
 
-const AddTodo = ({addTodoModal, setAddTodoModal}) => {
+const AddTodo = ({addTodoModal, setAddTodoModal, docRef, todos}) => {
     
-    const [task, setTask] = useState("");
-    const [priority, setPriority] = useState("");
+  const [ task, setTask ] = useState("");
+  const [ priority, setPriority ] = useState("");
+  const [ loading, setLoading ] = useState(false);
+
+  const addTodo = e => {
+
+    e.preventDefault();
+
+    setLoading(true);
+
+    updateDoc(docRef, {
+      todos: [...todos, {
+        id: nanoid(),
+        priority,
+        task
+      }]
+    })
+    .then(() => {
+      console.log("Doc updated");
+      setTask("");
+      setPriority("")
+      setAddTodoModal(false);
+      setLoading(false);
+    })
+    .catch(err => {
+      console.log(err);
+      setLoading(false);
+    })
+  }
+
+  const override = {
+    borderColor: "white",
+  };
 
   return (
     <div
@@ -27,15 +61,26 @@ const AddTodo = ({addTodoModal, setAddTodoModal}) => {
         </div>
 
         <div className="mt-4">
-        <form>
+        <form onSubmit={e => addTodo(e)}>
             <TextInput name="Task" input={task} setInput={setTask} />
             
-            <SelectInput name="Priority" input={priority} setInput={() => setPriority()} />
+            <SelectInput name="Priority" input={priority} setInput={setPriority} />
 
             <button
             type="submit"
             className="mt-2 text-md bg-green-400 py-2 rounded-sm pl-4 pr-1 text-white hover:shadow hover:bg-green-500 transition ease-in duration-300 rounded"
-            >Add <span className="ml-2"><FaPlus className="icon text-sm" /></span>
+            disabled={loading}
+            >
+              {!loading ? (
+                <>Add <span className="ml-2"><FaPlus className="icon text-sm" /></span></>
+              ) : (
+                <ClipLoader
+                  size={20}
+                  loading={loading}
+                  className="mt-1 mr-2"
+                  cssOverride={override}
+                />
+              )}
             </button>
         </form>
         </div>

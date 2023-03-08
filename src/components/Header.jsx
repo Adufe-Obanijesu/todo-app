@@ -16,7 +16,7 @@ const Header = () => {
 
   const auth = getAuth();
 
-  const user = useContext(UserContext);
+  const {user} = useContext(UserContext);
 
   const [ createTodoModal, setCreateTodoModal ] = useState(false);
   const [ date, setDate ] = useState(null);
@@ -40,7 +40,10 @@ const Header = () => {
   return (
     <div className="flex justify-center mb-6">
       <div className="pt-8 w-4/5 lg:w-1/2">
-        <h1 className="text-xl lg:text-2xl font-black tracking-wide text-center text-white uppercase">Welcome, Obanijesu</h1>
+        <div className="flex justify-center mb-2">
+          <img src={user.photoURL} className="h-24 w-24 object-cover rounded-full" alt="user" />
+        </div>
+        <h1 className="text-xl lg:text-2xl font-black tracking-wide text-center text-white uppercase">Welcome, {user.displayName}</h1>
         <p className="text-center text-white mt-2">
           So you have no plan for your life today. <span className="font-bold">CREATE ONE!!!</span>
           <button className="col-span-2 py-1 px-4 ml-4 bg-orange-500 hover:bg-orange-600 font-semibold transitionItem rounded-sm" onClick={() => planForToday()}>Create</button>

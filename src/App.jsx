@@ -9,10 +9,14 @@ import Signup from "./pages/Signup";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
+// Importing contexts
+import User from "./contexts/User";
+
 function App() {
   return (
-    <div className="App bg-cyan-500 pb-14">
+    <div className="App bg-cyan-500 min-h-screen pb-14">
       <BrowserRouter>
+      <User>
         <Routes>
           <Route
             path="/"
@@ -28,6 +32,7 @@ function App() {
             }
           />
         </Routes>
+        </User>
         <Footer />
       </BrowserRouter>
     </div>
