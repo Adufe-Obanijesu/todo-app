@@ -84,7 +84,7 @@ const Todo = ({ data }) => {
       >
         <div className="flex justify-between mb-2">
           <h3
-            className={`font-bold text-xl mb-2 ${
+            className={`font-bold text-xl text-sm md:text-base mb-2 ${
               status === "inProcess" && "text-gray-600"
             }`}
           >

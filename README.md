@@ -34,3 +34,7 @@ Open (<http://localhost:4173>) to view it in the browser.
 #### `yarn prettier --write src`
 
 This helps to format your code in the src directory
+
+##### Deploy Link
+
+This project is hosted on netlify. Follow this link to view (<https://phenomenal-cannoli-d81bdf.netlify.app/>)
