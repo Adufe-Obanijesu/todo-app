@@ -99,6 +99,15 @@ const Header = ({ todos }) => {
         <h1 className="text-xl lg:text-2xl font-black tracking-wide text-center text-white uppercase">
           Welcome, {user.displayName}
         </h1>
+        <div className="flex justify-center">
+          <button
+          className="col-span-2 py-1 px-4 ml-2 bg-orange-500 hover:bg-orange-600 font-semibold transitionItem rounded-sm text-white mt-2"
+          onClick={() => signout()}
+          >
+            Log out
+
+          </button>
+        </div>
 
         <p className="text-center text-white mt-2">
           {!today && (
@@ -114,12 +123,6 @@ const Header = ({ todos }) => {
             </>
           )}
 
-          <button
-            className="col-span-2 py-1 px-4 ml-2 bg-orange-500 hover:bg-orange-600 font-semibold transitionItem rounded-sm"
-            onClick={() => signout()}
-          >
-            Log out
-          </button>
         </p>
 
         {!tomorrow && (
