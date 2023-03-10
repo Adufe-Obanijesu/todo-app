@@ -1,39 +1,61 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Suspense, lazy } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 
 // Importing pages
 import Homepage from "./pages/Homepage";
 import Login from "./pages/Login";
-import Signup from "./pages/Signup";
+
+// React Lazy
+const Signup = lazy(() => import("./pages/Signup"));
 
 // Importing components
-import Header from "./components/Header";
 import Footer from "./components/Footer";
 
 // Importing contexts
 import User from "./contexts/User";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const override = {
+  borderColor: "white",
+  margin: "0",
+  padding: "0",
+};
+
 function App() {
   return (
     <div className="App bg-cyan-500 min-h-screen pb-14">
       <BrowserRouter>
-      <User>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Homepage />
+        <User>
+          <Suspense
+            fallback={
+              <div className="h-screen w-screen flex justify-center items-center">
+                <ClipLoader size={50} loading={true} cssOverride={override} />
+              </div>
             }
-          />
-          <Route path="/signup" element={<Signup />} />
-          <Route
-            path="/login"
-            element={
-              <Login />
-            }
-          />
-        </Routes>
+          >
+            <Routes>
+              <Route path="/" element={<Homepage />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/login" element={<Login />} />
+            </Routes>
+          </Suspense>
         </User>
         <Footer />
+        <ToastContainer
+          position="bottom-right"
+          autoClose="5000"
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        ></ToastContainer>
       </BrowserRouter>
     </div>
   );

@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 .transitionItem {
-    @apply transition duration-300 ease-in
+  @apply transition duration-300 ease-in;
 }
 
 .icon {
-    @apply inline mr-3 mb-1;
-  }
+  @apply inline mr-3 mb-1;
+}

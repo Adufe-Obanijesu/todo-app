@@ -11,6 +11,12 @@ import { ClipLoader } from "react-spinners";
 // Importing contexts
 import { UserContext } from "../../contexts/User";
 
+// Importing functions for notifications
+import {
+  successNotification,
+  errorNotification,
+} from "../../functions/Notifications";
+// toast.configure();
 const CreateTodo = ({ date, createTodoModal, setCreateTodoModal }) => {
   initializeApp(firebaseConfig);
   const { user } = useContext(UserContext);
@@ -26,14 +32,15 @@ const CreateTodo = ({ date, createTodoModal, setCreateTodoModal }) => {
     addDoc(colRef, {
       date,
       userId: user.uid,
-      todos: []
+      todos: [],
     })
       .then(() => {
-        console.log("created successfully");
+        successNotification("Plan created successfully");
         setLoading(false);
         setCreateTodoModal(false);
       })
       .catch((err) => {
+        errorNotification("Error in creating plan");
         console.log(err);
         setLoading(false);
         setCreateTodoModal(false);
@@ -43,7 +50,7 @@ const CreateTodo = ({ date, createTodoModal, setCreateTodoModal }) => {
   const override = {
     borderColor: "white",
     margin: "0",
-    padding: "0"
+    padding: "0",
   };
 
   return (
@@ -56,7 +63,10 @@ const CreateTodo = ({ date, createTodoModal, setCreateTodoModal }) => {
         className="h-screen w-full absolute z-10 bg-black bg-opacity-50 cursor-pointer"
         onClick={() => setCreateTodoModal(false)}
       ></div>
-      <div className="bg-white shadow-lg w-2/5 p-3" style={{ zIndex: 1000 }}>
+      <div
+        className="bg-white shadow-lg w-5/6 md:w-3/5 lg:w-2/5 p-3"
+        style={{ zIndex: 1000 }}
+      >
         <div className="border-b border-1 border-gray-200 py-2 mb-2">
           <h3 className="text-xl font-bold tracking-md">Let's make a plan</h3>
         </div>
@@ -70,7 +80,8 @@ const CreateTodo = ({ date, createTodoModal, setCreateTodoModal }) => {
             <button
               className="col-span-2 py-1 px-4 ml-4 bg-orange-500 hover:bg-orange-600 text-white font-semibold transitionItem rounded-sm"
               onClick={() => create()}
-              disabled={loading}>
+              disabled={loading}
+            >
               {!loading ? (
                 "Let's do this"
               ) : (

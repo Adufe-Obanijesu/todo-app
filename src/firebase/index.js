@@ -1,8 +1,26 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getFirestore, addDoc, collection, query, where, onSnapshot, doc, updateDoc, deleteDoc, orderBy } from "firebase/firestore";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged } from "firebase/auth";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"
+import {
+  getFirestore,
+  addDoc,
+  collection,
+  query,
+  where,
+  onSnapshot,
+  doc,
+  updateDoc,
+  deleteDoc,
+  orderBy,
+} from "firebase/firestore";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+  signOut,
+  onAuthStateChanged,
+} from "firebase/auth";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -18,4 +36,27 @@ initializeApp(firebaseConfig);
 
 const db = getFirestore();
 
-export { initializeApp, firebaseConfig, getAuth, where, createUserWithEmailAndPassword, updateProfile, getStorage, ref, uploadBytes, getDownloadURL, signInWithEmailAndPassword, signOut, onAuthStateChanged, addDoc, collection, db, query, onSnapshot, doc, updateDoc, deleteDoc, orderBy };
+export {
+  initializeApp,
+  firebaseConfig,
+  getAuth,
+  where,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  addDoc,
+  collection,
+  db,
+  query,
+  onSnapshot,
+  doc,
+  updateDoc,
+  deleteDoc,
+  orderBy,
+};

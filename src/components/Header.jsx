@@ -1,6 +1,6 @@
-import { useContext, useState, useEffect } from "react";
+import { lazy, Suspense, useContext, useState, useEffect } from "react";
 import moment from "moment";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   initializeApp,
   firebaseConfig,
@@ -9,9 +9,11 @@ import {
 } from "../firebase/index";
 
 // Importing components
-import CreateTodo from "./modals/CreateTodo";
+const CreateTodo = lazy(() => import("./modals/CreateTodo"));
 
 import { UserContext } from "../contexts/User";
+
+import { errorNotification } from "../functions/Notifications";
 
 const Header = ({ todos }) => {
   initializeApp(firebaseConfig);
@@ -29,8 +31,7 @@ const Header = ({ todos }) => {
 
   const checkToday = () => {
     const currentDate = Date.parse(moment().startOf("day")._d);
-    for(let i=0; i<todos.length; i++) {
-      
+    for (let i = 0; i < todos.length; i++) {
       if (todos[i].date === currentDate) {
         setToday(true);
         break;
@@ -38,12 +39,11 @@ const Header = ({ todos }) => {
         setToday(false);
       }
     }
-  }
+  };
 
   const checkTomorrow = () => {
     const tomorrowDate = Date.parse(moment().startOf("day").add(1, "days")._d);
-    for(let i=0; i<todos.length; i++) {
-
+    for (let i = 0; i < todos.length; i++) {
       if (todos[i].date === tomorrowDate) {
         setTomorrow(true);
         break;
@@ -51,36 +51,9 @@ const Header = ({ todos }) => {
         setTomorrow(false);
       }
     }
-  }
- 
-  // const checkDate = () => {
-  //   console.log(todos)
-  //   console.log("current", currentDate);
-    
-  //   if (todos.length === 0) {
-  //     setToday(false);
-  //     setTomorrow(false);
-  //   }
-  //   for(let i=0; i<todos.length; i++) {
-      
-  //     if (todos[i].date === currentDate) {
-  //       setToday(true);
-  //       break;
-  //     } else {
-  //       setToday(false);
-  //     }
-
-  //     if (todos[i].date === tomorrowDate) {
-  //       setTomorrow(true);
-  //       break;
-  //     } else {
-  //       setTomorrow(false);
-  //     }
-  //   }
-  // };
+  };
 
   const checkDate = () => {
-
     if (todos.length === 0) {
       setToday(false);
       setTomorrow(false);
@@ -88,17 +61,19 @@ const Header = ({ todos }) => {
     }
     checkToday();
     checkTomorrow();
-
-  }
+  };
 
   useEffect(() => {
     checkDate();
-  }, [todos])
+  }, [todos]);
 
   const signout = () => {
     signOut(auth)
       .then(() => navigate("/login"))
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        errorNotification("Error in signing out");
+      });
   };
 
   const planForToday = () => {
@@ -126,8 +101,7 @@ const Header = ({ todos }) => {
         </h1>
 
         <p className="text-center text-white mt-2">
-        {
-          !today && (
+          {!today && (
             <>
               So you have no plan for your life today.{" "}
               <span className="font-bold">CREATE ONE!!!</span>
@@ -138,9 +112,8 @@ const Header = ({ todos }) => {
                 Create
               </button>
             </>
-          )
-        }
-     
+          )}
+
           <button
             className="col-span-2 py-1 px-4 ml-2 bg-orange-500 hover:bg-orange-600 font-semibold transitionItem rounded-sm"
             onClick={() => signout()}
@@ -162,11 +135,13 @@ const Header = ({ todos }) => {
         )}
       </div>
       {/* Adding Modal */}
-      <CreateTodo
-        createTodoModal={createTodoModal}
-        setCreateTodoModal={() => setCreateTodoModal()}
-        date={date}
-      />
+      <Suspense>
+        <CreateTodo
+          createTodoModal={createTodoModal}
+          setCreateTodoModal={() => setCreateTodoModal()}
+          date={date}
+        />
+      </Suspense>
     </div>
   );
 };
