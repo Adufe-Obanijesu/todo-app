@@ -82,9 +82,9 @@ const Todo = ({ data }) => {
           status === "bad" && "bg-red-400"
         } ${status === "inProcess" && "bg-white"} text-white`}
       >
-        <div className="flex justify-between items-center mb-2">
+        <div className="flex justify-between mb-2">
           <h3
-            className={`font-bold text-base md:text-xl mb-2 ${
+            className={`font-bold text-xl text-sm md:text-base mb-2 ${
               status === "inProcess" && "text-gray-600"
             }`}
           >
