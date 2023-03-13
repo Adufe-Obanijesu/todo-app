@@ -41,6 +41,7 @@ const Todo = ({ data }) => {
         highest += score;
       });
       const currentDate = Date.parse(moment().startOf("day")._d);
+      console.log(currentDate)
       if (data.date >= currentDate) {
         setStatus("inProcess");
         return;
