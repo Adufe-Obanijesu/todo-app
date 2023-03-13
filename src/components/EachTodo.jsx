@@ -106,7 +106,7 @@ const EachTodo = ({ todo, todos, status, docRef, date }) => {
       {todo.priority === "C" && status === "inProcess" && (
         <span className="font-bold text-orange-500">C</span>
       )}
-      <p className={`col-span-8 ${status === "inProcess" && "text-gray-500"}`}>
+      <p className={`col-span-8 ${status === "inProcess" && "text-gray-500"} pr-2`}>
         {todo.task}
       </p>
       <p className="col-span-3 flex justify-center">
