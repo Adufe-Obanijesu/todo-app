@@ -1,5 +1,6 @@
 {
   "name": "funnytodo",
+  "homepage": "https:todo-app-two-orpin.vercel.app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
