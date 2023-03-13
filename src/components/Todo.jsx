@@ -8,6 +8,10 @@ import { FaPlus } from "react-icons/fa";
 
 // Importing components
 import EachTodo from "./EachTodo";
+
+// Importing notifications
+import { errorNotification } from "../functions/Notifications";
+
 const AddTodo = lazy(() => import("./modals/AddTodo"));
 const DeleteTodo = lazy(() => import("./modals/DeleteTodo"));
 
@@ -63,6 +67,16 @@ const Todo = ({ data }) => {
     };
   }, []);
 
+  const addTask = () => {
+    const currentDate = Date.parse(moment().startOf("day")._d);
+    if (currentDate > data.date) {
+      errorNotification("Move on... You have past this date already");
+      return;
+    }
+
+    setAddTodoModal(true);
+  }
+
   const Report = () => {
     if (status === "excellent") {
       return "Your day was productive. Well done!";
@@ -100,7 +114,7 @@ const Todo = ({ data }) => {
             } ${
               status === "bad" && "bg-red-500 hover:bg-red-600"
             } transitionItem rounded text-white text-sm`}
-            onClick={() => setAddTodoModal(true)}
+            onClick={() => addTask()}
           >
             Add a new task
             <span>
