@@ -24,7 +24,8 @@ const Todo = ({ data }) => {
   const docRef = doc(db, "todos", data.id);
 
   useEffect(() => {
-    const unsub = () => {
+    let mounted = true;  
+    if(mounted === true) {
       let result = 0;
       let highest = 0;
       data.todos.forEach((todo) => {
@@ -41,7 +42,7 @@ const Todo = ({ data }) => {
         highest += score;
       });
       const currentDate = Date.parse(moment().startOf("day")._d);
-      console.log(currentDate)
+      
       if (data.date >= currentDate) {
         setStatus("inProcess");
         return;
@@ -55,10 +56,10 @@ const Todo = ({ data }) => {
       } else {
         setStatus("bad");
       }
-    };
+    }
 
     return () => {
-      unsub();
+      mounted = false;
     };
   }, []);
 
